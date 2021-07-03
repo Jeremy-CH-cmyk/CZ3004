@@ -91,7 +91,7 @@ class FastestPath:
         # this will create a grid of coordinates
         cols, rows = np.meshgrid(range(0, 15), range(0, 20))
         cost = np.zeros([20, 15])
-        cost = np.sqrt(np.square(rows - goal[0]) + np.square(cols - goal[1]))
+        cost = np.sqrt(np.square(rows - goal[0]) + np.square(cols - goal[1])+np.square(cols - goal[2]))
         cost /= np.max(cost)
         return cost
 
@@ -245,6 +245,14 @@ class FastestPath:
             # Leaves out the last element as it will be the starting node for the next fastest path
             # (Otherwise the way-point will be added twice)
             path.extend(fsp[:-1])
+            h_n = self.__getHeuristicCosts(self.waypointB)
+            self.__initGraph(h_n)
+            fsp = self.__astar(start, self.waypointB)
+            start = copy.copy(self.waypointB)
+            # Leaves out the last element as it will be the starting node for the next fastest path
+            # (Otherwise the way-point will be added twice)
+            path.extend(fsp[:-1])
+
         h_n = self.__getHeuristicCosts(self.goal)
         self.__initGraph(h_n)
         fsp = self.__astar(start, self.goal)
