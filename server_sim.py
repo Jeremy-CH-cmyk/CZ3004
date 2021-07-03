@@ -20,7 +20,6 @@ from Algo.Exploration import Exploration
 from Algo.FastestPath import FastestPath
 from Algo.Constants import START, GOAL, NORTH
 
-__author__ = "Utsav Garg"
 
 define("port", default=8888, help="run on the given port", type=int)
 
