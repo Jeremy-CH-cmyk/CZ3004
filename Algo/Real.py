@@ -5,7 +5,6 @@ import numpy as np
 
 from Constants import MAX_ROWS, MAX_COLS, NORTH, SOUTH, EAST, WEST, RIGHT, LEFT, BOTTOM_LEFT_CORNER, BOTTOM_RIGHT_CORNER, TOP_RIGHT_CORNER, TOP_LEFT_CORNER
 
-__author__ = "Utsav Garg"
 
 
 class Robot:

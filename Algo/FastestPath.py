@@ -49,7 +49,7 @@ class FastestPath:
         waypoint (list): Coordinate of the way-point if specified
     """
 
-    def __init__(self, exploredMap, start, goal, direction, waypoint=None, waypointB=None, calibrateLim=5, sim=True):
+    def __init__(self, exploredMap, start, goal, direction, waypoint=None, waypointB=None, waypointC=None,waypointD=None,calibrateLim=5, sim=True):
         """Constructor to initialize an instance of the FastestPath class
 
         Args:
@@ -66,6 +66,8 @@ class FastestPath:
         self.goal = goal
         self.waypoint = waypoint
         self.waypointB = waypointB
+        self.waypointC = waypointC
+        self.waypointD = waypointD
         self.index = 1
         self.direction = direction
         self.path = []
@@ -91,7 +93,7 @@ class FastestPath:
         # this will create a grid of coordinates
         cols, rows = np.meshgrid(range(0, 15), range(0, 20))
         cost = np.zeros([20, 15])
-        cost = np.sqrt(np.square(rows - goal[0]) + np.square(cols - goal[1])+np.square(cols - goal[2]))
+        cost = np.sqrt(np.square(rows - goal[0]) + np.square(cols - goal[1]))
         cost /= np.max(cost)
         return cost
 
@@ -245,13 +247,21 @@ class FastestPath:
             # Leaves out the last element as it will be the starting node for the next fastest path
             # (Otherwise the way-point will be added twice)
             path.extend(fsp[:-1])
-            h_n = self.__getHeuristicCosts(self.waypointB)
-            self.__initGraph(h_n)
-            fsp = self.__astar(start, self.waypointB)
-            start = copy.copy(self.waypointB)
-            # Leaves out the last element as it will be the starting node for the next fastest path
-            # (Otherwise the way-point will be added twice)
-            path.extend(fsp[:-1])
+        h_n = self.__getHeuristicCosts(self.waypointB)
+        self.__initGraph(h_n)
+        fsp = self.__astar(start, self.waypointB)
+        start = copy.copy(self.waypointB)
+        path.extend(fsp[:-1])
+        h_n = self.__getHeuristicCosts(self.waypointC)
+        self.__initGraph(h_n)
+        fsp = self.__astar(start, self.waypointC)
+        start = copy.copy(self.waypointC)
+        path.extend(fsp[:-1])
+        h_n = self.__getHeuristicCosts(self.waypointD)
+        self.__initGraph(h_n)
+        fsp = self.__astar(start, self.waypointD)
+        start = copy.copy(self.waypointD)
+        path.extend(fsp[:-1])
 
         h_n = self.__getHeuristicCosts(self.goal)
         self.__initGraph(h_n)
@@ -319,3 +329,5 @@ class FastestPath:
         #             movement.append(calibrate[1])
         #             self.robot.stepCounter = 0
         self.index += 1
+
+        
